@@ -297,27 +297,27 @@ footer{text-align:center;padding:14px;color:#6B7280;font-size:12px;border-top:1p
     <div class="g2" style="grid-template-columns:1fr 1fr">
       <div class="card">
         <div class="st"><div class="st-bar"></div><h2>Classroom Specifications</h2></div>
-        <p style="font-size:13px;color:#6B7280;margin-bottom:2px">Each of the <strong style="color:#1A3D2B">18 classrooms</strong> is equipped with:</p>
+        <p style="font-size:13px;color:#6B7280;margin-bottom:2px">Each of the <strong id="specsNumRooms" style="color:#1A3D2B">18 classrooms</strong> is equipped with:</p>
         <div class="spec-row">
-          <div class="spec-item"><span style="font-size:20px">📐</span><div><div class="spec-val">7m × 9m</div><div class="spec-lbl">Floor area (63 m²)</div></div></div>
-          <div class="spec-item"><span style="font-size:20px">🪟</span><div><div class="spec-val">4</div><div class="spec-lbl">Windows per room</div></div></div>
-          <div class="spec-item"><span style="font-size:20px">💨</span><div><div class="spec-val">4</div><div class="spec-lbl">Fans per room</div></div></div>
+          <div class="spec-item"><span style="font-size:20px">📐</span><div><div class="spec-val" id="specsDims">7m × 9m</div><div class="spec-lbl" id="specsDimsLbl">Floor area (63 m²)</div></div></div>
+          <div class="spec-item"><span style="font-size:20px">🪟</span><div><div class="spec-val" id="specsWindows">4</div><div class="spec-lbl">Windows per room</div></div></div>
+          <div class="spec-item"><span style="font-size:20px">💨</span><div><div class="spec-val" id="specsFans">4</div><div class="spec-lbl">Fans per room</div></div></div>
         </div>
         <div class="spec-row" style="margin-top:8px">
-          <div class="spec-item"><span style="font-size:20px">🏫</span><div><div class="spec-val">18</div><div class="spec-lbl">Total classrooms</div></div></div>
-          <div class="spec-item"><span style="font-size:20px">📏</span><div><div class="spec-val">1,134 m²</div><div class="spec-lbl">Total floor area</div></div></div>
-          <div class="spec-item"><span style="font-size:20px">🌬️</span><div><div class="spec-val">72</div><div class="spec-lbl">Total fans</div></div></div>
+          <div class="spec-item"><span style="font-size:20px">🏫</span><div><div class="spec-val" id="specsTotal">18</div><div class="spec-lbl">Total classrooms</div></div></div>
+          <div class="spec-item"><span style="font-size:20px">📏</span><div><div class="spec-val" id="specsTotalArea">1,134 m²</div><div class="spec-lbl">Total floor area</div></div></div>
+          <div class="spec-item"><span style="font-size:20px">🌬️</span><div><div class="spec-val" id="specsTotalFans">72</div><div class="spec-lbl">Total fans</div></div></div>
         </div>
         <div class="banner" style="border-color:#D4A017;background:rgba(212,160,23,.07)">🪑 Space per learner: <strong id="spaceVal" style="color:#1A3D2B"></strong> m² — <strong id="spaceRating" style="color:#1A3D2B"></strong></div>
       </div>
       <div class="card">
         <div class="st"><div class="st-bar"></div><h2>Shifting Schedule</h2></div>
-        <p style="font-size:13px;color:#6B7280;margin-bottom:12px">A <strong style="color:#1A3D2B">two-shift system</strong> lets 18 rooms serve all 6 grade levels.</p>
+        <p style="font-size:13px;color:#6B7280;margin-bottom:12px">A <strong style="color:#1A3D2B">two-shift system</strong> lets <strong id="shiftNumRooms" style="color:#1A3D2B">18</strong> rooms serve all 6 grade levels.</p>
         <div class="shift-grid">
-          <div class="shift-card" style="background:linear-gradient(135deg,#FFF8E1,#FFF3CC);border:1px solid #F0D060"><div class="shift-lbl" style="color:#B8860B">🌅 Morning</div><div class="shift-item">Grade 7</div><div class="shift-item">Grade 9</div><div class="shift-item">Grade 11</div></div>
-          <div class="shift-card" style="background:linear-gradient(135deg,#E8F4FD,#D4E9FA);border:1px solid #90C4E8"><div class="shift-lbl" style="color:#1565C0">🌇 Afternoon</div><div class="shift-item">Grade 8</div><div class="shift-item">Grade 10</div><div class="shift-item">Grade 12</div></div>
+          <div class="shift-card" style="background:linear-gradient(135deg,#FFF8E1,#FFF3CC);border:1px solid #F0D060"><div class="shift-lbl" style="color:#B8860B">🌅 Morning</div><div id="morningGradesList"></div></div>
+          <div class="shift-card" style="background:linear-gradient(135deg,#E8F4FD,#D4E9FA);border:1px solid #90C4E8"><div class="shift-lbl" style="color:#1565C0">🌇 Afternoon</div><div id="afternoonGradesList"></div></div>
         </div>
-        <div class="banner" style="border-color:#2D7D4F;background:rgba(45,125,79,.06)">ℹ️ Both shifts share the same 18 rooms. Avg load: <strong id="avgPerRoom" style="color:#1A3D2B"></strong> learners/room/shift.</div>
+        <div class="banner" style="border-color:#2D7D4F;background:rgba(45,125,79,.06)">ℹ️ Both shifts share the same <span id="shiftRoomsInline">18</span> rooms. Avg load: <strong id="avgPerRoom" style="color:#1A3D2B"></strong> learners/room/shift.</div>
       </div>
       <div class="card full">
         <div class="st"><div class="st-bar"></div><h2 id="seatsTitle">Seat Capacity</h2></div>
@@ -388,6 +388,28 @@ footer{text-align:center;padding:14px;color:#6B7280;font-size:12px;border-top:1p
         <div class="card"><div class="st"><div class="st-bar"></div><h2>Persons w/ Disability (PWD)</h2></div><div style="display:flex;align-items:center;gap:10px"><label style="font-size:13px;font-weight:600;color:#1A3D2B;min-width:80px">PWD Count</label><input id="ed_pwd" type="number" min="0" class="inp" style="flex:1"/></div></div>
         <div class="card"><div class="st"><div class="st-bar"></div><h2>Teachers per Subject</h2></div><div id="ed_teachers" style="display:flex;flex-direction:column;gap:8px"></div></div>
         <div class="card"><div class="st"><div class="st-bar"></div><h2>Seat Capacity</h2></div><div id="ed_seats" style="display:flex;flex-direction:column;gap:8px"></div></div>
+        <div class="card" style="grid-column:1/-1">
+          <div class="st"><div class="st-bar" style="background:#880E4F"></div><h2>🏫 Classroom Specs &amp; Schedule</h2></div>
+          <p style="font-size:12px;color:#6B7280;margin-bottom:14px">Edit the physical specs of classrooms and the grade-level shift assignments for this school year.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px">
+            <div><label style="font-size:12px;font-weight:700;color:#1A3D2B;display:block;margin-bottom:4px">🏫 Total Classrooms</label><input id="ed_numRooms" type="number" min="1" class="inp" style="width:100%"/></div>
+            <div><label style="font-size:12px;font-weight:700;color:#1A3D2B;display:block;margin-bottom:4px">📐 Width (m)</label><input id="ed_widthM" type="number" min="1" step="0.5" class="inp" style="width:100%"/></div>
+            <div><label style="font-size:12px;font-weight:700;color:#1A3D2B;display:block;margin-bottom:4px">📐 Length (m)</label><input id="ed_lengthM" type="number" min="1" step="0.5" class="inp" style="width:100%"/></div>
+            <div><label style="font-size:12px;font-weight:700;color:#1A3D2B;display:block;margin-bottom:4px">🪟 Windows/Room</label><input id="ed_windowsPerRoom" type="number" min="0" class="inp" style="width:100%"/></div>
+            <div><label style="font-size:12px;font-weight:700;color:#1A3D2B;display:block;margin-bottom:4px">💨 Fans/Room</label><input id="ed_fansPerRoom" type="number" min="0" class="inp" style="width:100%"/></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#B8860B;margin-bottom:8px">🌅 Morning Shift — Grade Levels</div>
+              <div id="ed_morningGrades" style="display:flex;flex-direction:column;gap:6px"></div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#1565C0;margin-bottom:8px">🌇 Afternoon Shift — Grade Levels</div>
+              <div id="ed_afternoonGrades" style="display:flex;flex-direction:column;gap:6px"></div>
+            </div>
+          </div>
+          <p style="font-size:11px;color:#9CA3AF;margin-top:10px">💡 Check the grades that belong to each shift. Each grade should be in exactly one shift.</p>
+        </div>
         <div class="card"><div class="st"><div class="st-bar"></div><h2>Insights</h2></div><p style="font-size:12px;color:#6B7280;margin-bottom:8px">One per line.</p><textarea id="ed_insights" rows="6" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #c8e6c9;font-family:DM Sans,sans-serif;font-size:13px;resize:vertical;outline:none;line-height:1.6"></textarea></div>
         <div class="card"><div class="st"><div class="st-bar" style="background:#D4A017"></div><h2>Recommendations</h2></div><p style="font-size:12px;color:#6B7280;margin-bottom:8px">One per line.</p><textarea id="ed_recs" rows="6" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #FFCC80;font-family:DM Sans,sans-serif;font-size:13px;resize:vertical;outline:none;line-height:1.6"></textarea></div>
       </div>
@@ -465,6 +487,20 @@ const transitions=[
   {label:"2023-24→2024-25",g10:221,g11:182,pct:82.4},
   {label:"2024-25→2025-26",g10:259,g11:200,pct:77.2},
 ];
+// ═══ CLASSROOM SPECS & SCHEDULE ══════════════════════════════════════════════
+// numRooms: total classroom count
+// widthM, lengthM: room dimensions in metres
+// windowsPerRoom, fansPerRoom: fixtures per classroom
+// morningGrades: grade keys assigned to morning shift (e.g. ["G7","G9","G11"])
+// afternoonGrades: grade keys assigned to afternoon shift
+const classroomSpecs={
+  "2021-2022":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2022-2023":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2023-2024":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2024-2025":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2025-2026":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+};
+
 const insightsData={
   "2021-2022":{insights:["Student enrollment showed a stable population during the school year.","Classroom utilization was managed through proper scheduling.","Promotion rates indicated that most students successfully completed their grade level.","School facilities were sufficient but already showing signs of limited capacity.","There are 5 dropouts recorded this school year."],recommendations:["Continue monitoring enrollment trends for future classroom planning.","Improve classroom resources to support student learning.","Maintain academic programs that help students achieve high promotion rates.","Begin planning for additional facilities to accommodate future growth."]},
   "2022-2023":{insights:["The school achieved a zero-dropout rate, showing strong student retention.","Enrollment remained stable and manageable.","Teachers and school staff effectively supported student engagement.","The two-shift schedule helped maximize classroom usage."],recommendations:["Sustain guidance counseling and student support programs.","Enhance communication with parents to maintain student retention.","Continue improving classroom management strategies.","Explore opportunities for additional classroom construction."]},
@@ -714,18 +750,42 @@ function renderSeats(){
 }
 function renderFacilities(){
   const yr=currentYear,yrs=comparedYears,multi=yrs.length>=2,{total}=totals(yr);
-  const sp=(18*63/total).toFixed(1);
+  const specs=classroomSpecs[yr]||{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]};
+  const area=specs.widthM*specs.lengthM;
+  const totalArea=specs.numRooms*area;
+  const totalFans=specs.numRooms*specs.fansPerRoom;
+  const sp=(totalArea/total).toFixed(1);
+  // Spec display
+  const nr=document.getElementById("specsNumRooms");if(nr)nr.textContent=specs.numRooms+" classrooms";
+  const sd=document.getElementById("specsDims");if(sd)sd.textContent=`${specs.widthM}m × ${specs.lengthM}m`;
+  const sdl=document.getElementById("specsDimsLbl");if(sdl)sdl.textContent=`Floor area (${area} m²)`;
+  const sw=document.getElementById("specsWindows");if(sw)sw.textContent=specs.windowsPerRoom;
+  const sf=document.getElementById("specsFans");if(sf)sf.textContent=specs.fansPerRoom;
+  const st=document.getElementById("specsTotal");if(st)st.textContent=specs.numRooms;
+  const sta=document.getElementById("specsTotalArea");if(sta)sta.textContent=totalArea.toLocaleString()+" m²";
+  const stf=document.getElementById("specsTotalFans");if(stf)stf.textContent=totalFans;
   document.getElementById("spaceVal").textContent=sp;
   document.getElementById("spaceRating").textContent=parseFloat(sp)>=1.5?"comfortable space ratio":"tight space ratio";
-  const mT=["G7","G9","G11"].reduce((s,g)=>s+gradeTotal(yr,g),0),aT=["G8","G10","G12"].reduce((s,g)=>s+gradeTotal(yr,g),0);
-  document.getElementById("avgPerRoom").textContent=Math.round((mT+aT)/18/2);
+  // Shift display
+  const snr=document.getElementById("shiftNumRooms");if(snr)snr.textContent=specs.numRooms;
+  const sri=document.getElementById("shiftRoomsInline");if(sri)sri.textContent=specs.numRooms;
+  const gradeLabel=g=>`Grade ${g.slice(1)}`;
+  const mgEl=document.getElementById("morningGradesList");
+  if(mgEl)mgEl.innerHTML=specs.morningGrades.map(g=>`<div class="shift-item">${gradeLabel(g)}</div>`).join("");
+  const agEl=document.getElementById("afternoonGradesList");
+  if(agEl)agEl.innerHTML=specs.afternoonGrades.map(g=>`<div class="shift-item">${gradeLabel(g)}</div>`).join("");
+  const mT=specs.morningGrades.reduce((s,g)=>s+gradeTotal(yr,g),0),aT=specs.afternoonGrades.reduce((s,g)=>s+gradeTotal(yr,g),0);
+  document.getElementById("avgPerRoom").textContent=Math.round((mT+aT)/specs.numRooms/2);
   document.getElementById("shiftTitle").textContent=multi?`Enrollment by Shift — ${yrs.length} Years`:`Enrollment by Shift — ${yr}`;
-  document.getElementById("shiftStats").innerHTML=[["Morning","🌅","#FFF8E1","#FFF3CC","#F0D060","#B8860B",["G7","G9","G11"],mT],["Afternoon","🌇","#E8F4FD","#D4E9FA","#90C4E8","#1565C0",["G8","G10","G12"],aT]].map(([name,ico,c1,c2,border,tc,gs,tot])=>`<div style="background:linear-gradient(135deg,${c1},${c2});border:1px solid ${border};border-radius:12px;padding:14px 16px;margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:${tc};text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">${ico} ${name} — ${yr}</div>${gs.map(g=>`<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.06)"><span style="font-weight:600;color:${NAVY}">Grade ${g.slice(1)}</span><span style="color:${tc};font-weight:700">${gradeTotal(yr,g)}</span></div>`).join("")}<div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0 0;font-weight:800;color:${NAVY}"><span>Total</span><span>${tot}</span></div></div>`).join("");
+  document.getElementById("shiftStats").innerHTML=[[`Morning`,`🌅`,`#FFF8E1`,`#FFF3CC`,`#F0D060`,`#B8860B`,specs.morningGrades,mT],[`Afternoon`,`🌇`,`#E8F4FD`,`#D4E9FA`,`#90C4E8`,`#1565C0`,specs.afternoonGrades,aT]].map(([name,ico,c1,c2,border,tc,gs,tot])=>`<div style="background:linear-gradient(135deg,${c1},${c2});border:1px solid ${border};border-radius:12px;padding:14px 16px;margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:${tc};text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">${ico} ${name} — ${yr}</div>${gs.map(g=>`<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.06)"><span style="font-weight:600;color:${NAVY}">Grade ${g.slice(1)}</span><span style="color:${tc};font-weight:700">${gradeTotal(yr,g)}</span></div>`).join("")}<div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0 0;font-weight:800;color:${NAVY}"><span>Total</span><span>${tot}</span></div></div>`).join("");
   dc("shift");
-  const gKeys=["G7","G8","G9","G10","G11","G12"],sLabels=["G7(AM)","G8(PM)","G9(AM)","G10(PM)","G11(AM)","G12(PM)"];
-  const sDatasets=multi?yrs.map(y=>({label:y,data:gKeys.map(g=>gradeTotal(y,g)),backgroundColor:pal(y).m,borderRadius:6,borderSkipped:false})):[{label:"Learners",data:gKeys.map(g=>gradeTotal(yr,g)),backgroundColor:gKeys.map((_,i)=>i%2===0?GOLD:"#1565C0"),borderRadius:6,borderSkipped:false}];
+  const gKeys=[...specs.morningGrades,...specs.afternoonGrades];
+  const sLabels=specs.morningGrades.map(g=>g+"(AM)").concat(specs.afternoonGrades.map(g=>g+"(PM)"));
+  const allGKeys=[...specs.morningGrades,...specs.afternoonGrades];
+  const allSLabels=[...specs.morningGrades.map(g=>`G${g.slice(1)}(AM)`),...specs.afternoonGrades.map(g=>`G${g.slice(1)}(PM)`)];
+  const sDatasets=multi?yrs.map(y=>({label:y,data:allGKeys.map(g=>gradeTotal(y,g)),backgroundColor:pal(y).m,borderRadius:6,borderSkipped:false})):[{label:"Learners",data:allGKeys.map(g=>gradeTotal(yr,g)),backgroundColor:allGKeys.map((_,i)=>i<specs.morningGrades.length?GOLD:"#1565C0"),borderRadius:6,borderSkipped:false}];
   const sLeg=multi?{labels:{generateLabels:()=>yrs.map(y=>({text:y,fillStyle:pal(y).m,strokeStyle:pal(y).m,lineWidth:0,hidden:false,fontStyle:"normal"}))}}:{display:false};
-  CH["shift"]=new Chart(document.getElementById("shiftChart"),{type:"bar",data:{labels:sLabels,datasets:sDatasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:multi?{labels:sLeg.labels}:{display:false},tooltip:{...ttp}},scales:{x:{grid:{display:false},ticks:axTick},y:{grid:{color:gc},ticks:axTick}}}});
+  CH["shift"]=new Chart(document.getElementById("shiftChart"),{type:"bar",data:{labels:allSLabels,datasets:sDatasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:multi?{labels:sLeg.labels}:{display:false},tooltip:{...ttp}},scales:{x:{grid:{display:false},ticks:axTick},y:{grid:{color:gc},ticks:axTick}}}});
 }
 function renderInsights(){
   const yrs=[...comparedYears].sort(),grid=document.getElementById("insightsGrid");
@@ -839,6 +899,23 @@ function populateEditForm(){
   const ins=insightsData[yr]||{insights:[],recommendations:[]};
   document.getElementById("ed_insights").value=ins.insights.join("\n");
   document.getElementById("ed_recs").value=ins.recommendations.join("\n");
+  // Classroom Specs
+  const specs=classroomSpecs[yr]||{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]};
+  document.getElementById("ed_numRooms").value=specs.numRooms;
+  document.getElementById("ed_widthM").value=specs.widthM;
+  document.getElementById("ed_lengthM").value=specs.lengthM;
+  document.getElementById("ed_windowsPerRoom").value=specs.windowsPerRoom;
+  document.getElementById("ed_fansPerRoom").value=specs.fansPerRoom;
+  // Grade checkboxes for shifts
+  const buildShiftChecks=(containerId,assignedGrades)=>{
+    document.getElementById(containerId).innerHTML=GRADES.map(g=>{
+      const checked=assignedGrades.includes(g);
+      const lbl=`Grade ${g.slice(1)}`;
+      return `<label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#1A3D2B;cursor:pointer;user-select:none"><input type="checkbox" id="${containerId}_${g}" ${checked?"checked":""} style="width:15px;height:15px;accent-color:#2D7D4F;cursor:pointer"/> ${lbl}</label>`;
+    }).join("");
+  };
+  buildShiftChecks("ed_morningGrades",specs.morningGrades);
+  buildShiftChecks("ed_afternoonGrades",specs.afternoonGrades);
 }
 function applyEdit(){
   const yr=document.getElementById("editYear").value;
@@ -854,6 +931,18 @@ function applyEdit(){
   teachers.forEach(r=>{const el=document.getElementById(`tch_${r.s.replace(/[. ]/g,"_")}`);if(el)r[yr]=parseInt(el.value)||0;});
   seats.forEach(r=>{const el=document.getElementById(`seat_${r.g.replace(/ /g,"_")}`);if(el)r[yr]=parseInt(el.value)||0;});
   insightsData[yr]={insights:document.getElementById("ed_insights").value.split("\n").map(s=>s.trim()).filter(Boolean),recommendations:document.getElementById("ed_recs").value.split("\n").map(s=>s.trim()).filter(Boolean)};
+  // Classroom Specs
+  const morningGs=GRADES.filter(g=>{const el=document.getElementById(`ed_morningGrades_${g}`);return el&&el.checked;});
+  const afternoonGs=GRADES.filter(g=>{const el=document.getElementById(`ed_afternoonGrades_${g}`);return el&&el.checked;});
+  classroomSpecs[yr]={
+    numRooms:parseInt(document.getElementById("ed_numRooms").value)||18,
+    widthM:parseFloat(document.getElementById("ed_widthM").value)||7,
+    lengthM:parseFloat(document.getElementById("ed_lengthM").value)||9,
+    windowsPerRoom:parseInt(document.getElementById("ed_windowsPerRoom").value)||4,
+    fansPerRoom:parseInt(document.getElementById("ed_fansPerRoom").value)||4,
+    morningGrades:morningGs.length>0?morningGs:["G7","G9","G11"],
+    afternoonGrades:afternoonGs.length>0?afternoonGs:["G8","G10","G12"],
+  };
   // Auto-recalculate transition: this year G10 → next year G11
   if(yrIdx>=0&&yrIdx<YEARS.length-1){
     const nextYr=YEARS[yrIdx+1];
@@ -884,6 +973,10 @@ function addNewYear(){
   promoRates[yr]={};GRADES.forEach(g=>promoRates[yr][g]={m:0,f:0});promoRates[yr].total={m:0,f:0};
   dropouts.push({year:yr,male:0,female:0});lwd[yr]=0;teachers.forEach(r=>r[yr]=0);seats.forEach(r=>r[yr]=0);
   insightsData[yr]={insights:[],recommendations:[]};PAL[yr]=autoCol;
+  // Inherit classroom specs from previous year as a starting point
+  const prevSpecsYr=YEARS[YEARS.indexOf(yr)-1];
+  const prevSpecs=prevSpecsYr&&classroomSpecs[prevSpecsYr];
+  classroomSpecs[yr]=prevSpecs?{...prevSpecs}:{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]};
   // Add a placeholder transition entry (prev year G10 → new year G11)
   if(YEARS.length>=2){
     const prevYr=YEARS[YEARS.length-2];
@@ -936,14 +1029,14 @@ function deleteYear(){
 }
 function resetData(){if(!confirm("Reset ALL data to defaults?"))return;localStorage.removeItem("anhs_data");location.reload();}
 function downloadData(){
-  const data={YEARS,enrollment,promoRates,dropouts,lwd,teachers,seats,insightsData,transitions};
+  const data={YEARS,enrollment,promoRates,dropouts,lwd,teachers,seats,insightsData,transitions,classroomSpecs};
   const a=document.createElement("a");
   a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));
   a.download="data.json";a.click();URL.revokeObjectURL(a.href);
   showToast("💾 data.json downloaded! Upload to your project folder.");
 }
 function backupData(){
-  const data={YEARS,enrollment,promoRates,dropouts,lwd,teachers,seats,insightsData,transitions};
+  const data={YEARS,enrollment,promoRates,dropouts,lwd,teachers,seats,insightsData,transitions,classroomSpecs};
   const a=document.createElement("a");
   a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));
   a.download=`ANHS_Backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href);
@@ -964,6 +1057,7 @@ function restoreBackup(e){
       if(s.seats)s.seats.forEach((ss,i)=>{if(seats[i])Object.assign(seats[i],ss);});
       if(s.insightsData)Object.assign(insightsData,s.insightsData);
       if(s.transitions){transitions.length=0;s.transitions.forEach(t=>transitions.push(t));}
+      if(s.classroomSpecs)Object.assign(classroomSpecs,s.classroomSpecs);
       YEARS.forEach(yr=>{if(!PAL[yr])PAL[yr]={m:"#37474F",f:"#90A4AE"};});
       persistData();notifyDataChange();renderAll();renderPromoTable();
       const sel=document.getElementById("editYear");sel.innerHTML=YEARS.map(y=>`<option value="${y}">${y}</option>`).join("");
@@ -979,7 +1073,7 @@ function notifyDataChange(){
     window.parent.postMessage({type:"anhs_data_update",payload:JSON.stringify(data)},"*");
   }catch(e){}
 }
-function persistData(){try{localStorage.setItem("anhs_data",JSON.stringify({YEARS,enrollment,promoRates,dropouts,lwd,teachers,seats,insightsData,transitions}));}catch(e){console.warn(e);}}
+function persistData(){try{localStorage.setItem("anhs_data",JSON.stringify({YEARS,enrollment,promoRates,dropouts,lwd,teachers,seats,insightsData,transitions,classroomSpecs}));}catch(e){console.warn(e);}}
 function loadPersistedData(){
   try{
     // Support Streamlit injection (server-side data.json) or localStorage
@@ -995,6 +1089,7 @@ function loadPersistedData(){
     if(s.seats)s.seats.forEach((ss,i)=>{if(seats[i])Object.assign(seats[i],ss);});
     if(s.insightsData)Object.assign(insightsData,s.insightsData);
     if(s.transitions){transitions.length=0;s.transitions.forEach(t=>transitions.push(t));}
+    if(s.classroomSpecs)Object.assign(classroomSpecs,s.classroomSpecs);
     YEARS.forEach(yr=>{if(!PAL[yr])PAL[yr]={m:"#37474F",f:"#90A4AE"};});
   }catch(e){console.warn(e);}
 }
