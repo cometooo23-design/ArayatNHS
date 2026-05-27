@@ -44,6 +44,7 @@ header{background:linear-gradient(135deg,#1A3D2B 0%,#2D7D4F 100%);color:#fff;pos
 .nav{max-width:1400px;margin:8px auto 0;padding:0 20px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .tab{background:transparent;border:none;color:#a5d6a7;padding:9px 15px;font-size:13px;font-weight:700;cursor:pointer;border-radius:8px 8px 0 0;transition:all .2s;white-space:nowrap;font-family:"DM Sans",sans-serif}
+.tab-signout{color:#ffc8c8!important;flex-shrink:0}.tab-signout:hover{background:rgba(255,100,100,.18)!important;color:#fff!important}
 .tab.active{background:#f5f8f5;color:#1A3D2B}
 .tab:not(.active):hover{background:rgba(255,255,255,.1);color:#fff}
 main{max-width:1400px;margin:0 auto;padding:20px 20px 32px}
@@ -203,10 +204,6 @@ footer{text-align:center;padding:14px;color:#6B7280;font-size:12px;border-top:1p
     </div>
     <div class="hdr-right">
       <button class="edit-btn" onclick="openEdit()">✏️ Edit</button>
-      <button class="edit-btn" onclick="downloadData()" title="Download data.json — commit to GitHub or upload to Streamlit" style="background:rgba(212,160,23,.22);border-color:rgba(212,160,23,.5)">💾 Export JSON</button>
-      <button class="signout-btn" id="signOutBtn" onclick="signOutUser()" title="Sign out">
-        <img id="userAvatar" src="" alt=""/><span id="userName"></span>
-      </button>
       <div class="yr-wrap" id="yrWrap">
         <button class="yr-btn" id="yrBtn" onclick="toggleDd(event)">
           <span class="yr-prefix">School Year</span><span id="yrLabel">2025-2026</span><span class="arr">▾</span>
@@ -228,6 +225,7 @@ footer{text-align:center;padding:14px;color:#6B7280;font-size:12px;border-top:1p
     <button class="tab" data-panel="faculty">👩‍🏫 Faculty</button>
     <button class="tab" data-panel="facilities">🏛️ Facilities</button>
     <button class="tab" data-panel="insights">💡 Insights and Recommendations</button>
+    <button class="tab tab-signout" onclick="signOutUser()" id="signOutBtn" title="Sign out" style="margin-left:auto">👤 <span id="userName"></span> &nbsp;Sign Out</button>
   </nav>
 </header>
 
@@ -363,6 +361,7 @@ footer{text-align:center;padding:14px;color:#6B7280;font-size:12px;border-top:1p
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="modal-hdr-btn" onclick="backupData()">💾 Backup</button>
         <label class="modal-hdr-btn">📂 Restore<input type="file" accept=".json" onchange="restoreBackup(event)" style="display:none"/></label>
+        <button class="modal-hdr-btn" onclick="downloadData()" title="Download data.json — commit to GitHub or upload to Streamlit" style="background:rgba(212,160,23,.28);border-color:rgba(212,160,23,.6)">💾 Export JSON</button>
         <button class="modal-hdr-btn" onclick="closeEdit()">✕ Close</button>
       </div>
     </div>
