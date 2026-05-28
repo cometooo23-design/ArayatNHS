@@ -311,13 +311,16 @@ footer{text-align:center;padding:14px;color:#6B7280;font-size:12px;border-top:1p
         <div class="banner" style="border-color:#D4A017;background:rgba(212,160,23,.07)">🪑 Space per learner: <strong id="spaceVal" style="color:#1A3D2B"></strong> m² — <strong id="spaceRating" style="color:#1A3D2B"></strong></div>
       </div>
       <div class="card">
-        <div class="st"><div class="st-bar"></div><h2>Shifting Schedule</h2></div>
-        <p style="font-size:13px;color:#6B7280;margin-bottom:12px">A <strong style="color:#1A3D2B">two-shift system</strong> lets <strong id="shiftNumRooms" style="color:#1A3D2B">18</strong> rooms serve all 6 grade levels.</p>
-        <div class="shift-grid">
-          <div class="shift-card" style="background:linear-gradient(135deg,#FFF8E1,#FFF3CC);border:1px solid #F0D060"><div class="shift-lbl" style="color:#B8860B">🌅 Morning</div><div id="morningGradesList"></div></div>
-          <div class="shift-card" style="background:linear-gradient(135deg,#E8F4FD,#D4E9FA);border:1px solid #90C4E8"><div class="shift-lbl" style="color:#1565C0">🌇 Afternoon</div><div id="afternoonGradesList"></div></div>
+        <div class="st"><div class="st-bar"></div><h2 id="shiftCardTitle">Shifting Schedule</h2></div>
+        <p id="shiftCardDesc" style="font-size:13px;color:#6B7280;margin-bottom:12px">A <strong style="color:#1A3D2B">two-shift system</strong> lets <strong id="shiftNumRooms" style="color:#1A3D2B">18</strong> rooms serve all 6 grade levels.</p>
+        <div id="shiftingScheduleCard">
+          <div class="shift-grid">
+            <div class="shift-card" style="background:linear-gradient(135deg,#FFF8E1,#FFF3CC);border:1px solid #F0D060"><div class="shift-lbl" style="color:#B8860B">🌅 Morning</div><div id="morningGradesList"></div></div>
+            <div class="shift-card" style="background:linear-gradient(135deg,#E8F4FD,#D4E9FA);border:1px solid #90C4E8"><div class="shift-lbl" style="color:#1565C0">🌇 Afternoon</div><div id="afternoonGradesList"></div></div>
+          </div>
         </div>
-        <div class="banner" style="border-color:#2D7D4F;background:rgba(45,125,79,.06)">ℹ️ Both shifts share the same <span id="shiftRoomsInline">18</span> rooms. Avg load: <strong id="avgPerRoom" style="color:#1A3D2B"></strong> learners/room/shift.</div>
+        <div id="regularScheduleBanner" style="display:none;background:linear-gradient(135deg,#E8F5E9,#d4edda);border:1px solid #a5d6a7;border-radius:10px;padding:14px 16px;margin-bottom:12px;font-size:13px;color:#1A3D2B;font-weight:600">🏫 All grade levels attend during regular school hours — no shift split required.</div>
+        <div class="banner" style="border-color:#2D7D4F;background:rgba(45,125,79,.06)" id="shiftBanner">ℹ️ Both shifts share the same <span id="shiftRoomsInline">18</span> rooms. Avg load: <strong id="avgPerRoom" style="color:#1A3D2B"></strong> learners/room/shift.</div>
       </div>
       <div class="card full">
         <div class="st"><div class="st-bar"></div><h2 id="seatsTitle">Seat Capacity</h2></div>
@@ -388,7 +391,7 @@ footer{text-align:center;padding:14px;color:#6B7280;font-size:12px;border-top:1p
         <div class="card"><div class="st"><div class="st-bar"></div><h2>Persons w/ Disability (PWD)</h2></div><div style="display:flex;align-items:center;gap:10px"><label style="font-size:13px;font-weight:600;color:#1A3D2B;min-width:80px">PWD Count</label><input id="ed_pwd" type="number" min="0" class="inp" style="flex:1"/></div></div>
         <div class="card"><div class="st"><div class="st-bar"></div><h2>Teachers per Subject</h2></div><div id="ed_teachers" style="display:flex;flex-direction:column;gap:8px"></div></div>
         <div class="card"><div class="st"><div class="st-bar"></div><h2>Seat Capacity</h2></div><div id="ed_seats" style="display:flex;flex-direction:column;gap:8px"></div></div>
-        <div class="card" style="grid-column:1/-1">
+          <div class="card" style="grid-column:1/-1">
           <div class="st"><div class="st-bar" style="background:#880E4F"></div><h2>🏫 Classroom Specs &amp; Schedule</h2></div>
           <p style="font-size:12px;color:#6B7280;margin-bottom:14px">Edit the physical specs of classrooms and the grade-level shift assignments for this school year.</p>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px">
@@ -398,6 +401,16 @@ footer{text-align:center;padding:14px;color:#6B7280;font-size:12px;border-top:1p
             <div><label style="font-size:12px;font-weight:700;color:#1A3D2B;display:block;margin-bottom:4px">🪟 Windows/Room</label><input id="ed_windowsPerRoom" type="number" min="0" class="inp" style="width:100%"/></div>
             <div><label style="font-size:12px;font-weight:700;color:#1A3D2B;display:block;margin-bottom:4px">💨 Fans/Room</label><input id="ed_fansPerRoom" type="number" min="0" class="inp" style="width:100%"/></div>
           </div>
+          <!-- Schedule Type Toggle -->
+          <div style="margin-bottom:16px">
+            <div style="font-size:12px;font-weight:700;color:#1A3D2B;margin-bottom:8px">📅 Schedule Type</div>
+            <div style="display:flex;gap:0;border-radius:10px;overflow:hidden;border:1.5px solid #c8e6c9;width:fit-content">
+              <button id="ed_schedTypeShifting" onclick="setScheduleType('shifting')" style="padding:8px 20px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:DM Sans,sans-serif;background:#1A3D2B;color:#fff;transition:all .2s">⇄ Shifting</button>
+              <button id="ed_schedTypeRegular" onclick="setScheduleType('regular')" style="padding:8px 20px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:DM Sans,sans-serif;background:#f0f4f0;color:#6B7280;transition:all .2s">🏫 Regular</button>
+            </div>
+            <p style="font-size:11px;color:#9CA3AF;margin-top:6px" id="ed_schedTypeDesc">Two-shift system: AM and PM grade groups share the same rooms.</p>
+          </div>
+          <div id="ed_shiftAssignments">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
             <div>
               <div style="font-size:12px;font-weight:700;color:#B8860B;margin-bottom:8px">🌅 Morning Shift — Grade Levels</div>
@@ -409,6 +422,7 @@ footer{text-align:center;padding:14px;color:#6B7280;font-size:12px;border-top:1p
             </div>
           </div>
           <p style="font-size:11px;color:#9CA3AF;margin-top:10px">💡 Check the grades that belong to each shift. Each grade should be in exactly one shift.</p>
+          </div>
         </div>
         <div class="card"><div class="st"><div class="st-bar"></div><h2>Insights</h2></div><p style="font-size:12px;color:#6B7280;margin-bottom:8px">One per line.</p><textarea id="ed_insights" rows="6" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #c8e6c9;font-family:DM Sans,sans-serif;font-size:13px;resize:vertical;outline:none;line-height:1.6"></textarea></div>
         <div class="card"><div class="st"><div class="st-bar" style="background:#D4A017"></div><h2>Recommendations</h2></div><p style="font-size:12px;color:#6B7280;margin-bottom:8px">One per line.</p><textarea id="ed_recs" rows="6" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #FFCC80;font-family:DM Sans,sans-serif;font-size:13px;resize:vertical;outline:none;line-height:1.6"></textarea></div>
@@ -494,11 +508,11 @@ const transitions=[
 // morningGrades: grade keys assigned to morning shift (e.g. ["G7","G9","G11"])
 // afternoonGrades: grade keys assigned to afternoon shift
 const classroomSpecs={
-  "2021-2022":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2022-2023":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2023-2024":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2024-2025":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2025-2026":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2021-2022":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2022-2023":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2023-2024":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2024-2025":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2025-2026":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
 };
 
 const insightsData={
@@ -750,7 +764,8 @@ function renderSeats(){
 }
 function renderFacilities(){
   const yr=currentYear,yrs=comparedYears,multi=yrs.length>=2,{total}=totals(yr);
-  const specs=classroomSpecs[yr]||{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]};
+  const specs=classroomSpecs[yr]||{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]};
+  const isShifting=(specs.scheduleType||"shifting")==="shifting";
   const area=specs.widthM*specs.lengthM;
   const totalArea=specs.numRooms*area;
   const totalFans=specs.numRooms*specs.fansPerRoom;
@@ -770,21 +785,55 @@ function renderFacilities(){
   const snr=document.getElementById("shiftNumRooms");if(snr)snr.textContent=specs.numRooms;
   const sri=document.getElementById("shiftRoomsInline");if(sri)sri.textContent=specs.numRooms;
   const gradeLabel=g=>`Grade ${g.slice(1)}`;
+  // Toggle shifting card visibility
+  const shiftingCard=document.getElementById("shiftingScheduleCard");
+  const regularBanner=document.getElementById("regularScheduleBanner");
+  if(shiftingCard)shiftingCard.style.display=isShifting?"":"none";
+  if(regularBanner)regularBanner.style.display=isShifting?"none":"";
+  const shiftTitleEl=document.getElementById("shiftCardTitle");
+  if(shiftTitleEl)shiftTitleEl.textContent=isShifting?"Shifting Schedule":"Regular Schedule";
+  const shiftDescEl=document.getElementById("shiftCardDesc");
+  if(shiftDescEl){
+    if(isShifting){shiftDescEl.innerHTML=`A <strong style="color:#1A3D2B">two-shift system</strong> lets <strong id="shiftNumRooms" style="color:#1A3D2B">${specs.numRooms}</strong> rooms serve all 6 grade levels.`;}
+    else{shiftDescEl.innerHTML=`A <strong style="color:#1A3D2B">regular (single-shift) schedule</strong> — all <strong style="color:#1A3D2B">${specs.numRooms}</strong> rooms used during standard school hours.`;}
+  }
   const mgEl=document.getElementById("morningGradesList");
   if(mgEl)mgEl.innerHTML=specs.morningGrades.map(g=>`<div class="shift-item">${gradeLabel(g)}</div>`).join("");
   const agEl=document.getElementById("afternoonGradesList");
   if(agEl)agEl.innerHTML=specs.afternoonGrades.map(g=>`<div class="shift-item">${gradeLabel(g)}</div>`).join("");
   const mT=specs.morningGrades.reduce((s,g)=>s+gradeTotal(yr,g),0),aT=specs.afternoonGrades.reduce((s,g)=>s+gradeTotal(yr,g),0);
-  document.getElementById("avgPerRoom").textContent=Math.round((mT+aT)/specs.numRooms/2);
-  document.getElementById("shiftTitle").textContent=multi?`Enrollment by Shift — ${yrs.length} Years`:`Enrollment by Shift — ${yr}`;
-  document.getElementById("shiftStats").innerHTML=[[`Morning`,`🌅`,`#FFF8E1`,`#FFF3CC`,`#F0D060`,`#B8860B`,specs.morningGrades,mT],[`Afternoon`,`🌇`,`#E8F4FD`,`#D4E9FA`,`#90C4E8`,`#1565C0`,specs.afternoonGrades,aT]].map(([name,ico,c1,c2,border,tc,gs,tot])=>`<div style="background:linear-gradient(135deg,${c1},${c2});border:1px solid ${border};border-radius:12px;padding:14px 16px;margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:${tc};text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">${ico} ${name} — ${yr}</div>${gs.map(g=>`<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.06)"><span style="font-weight:600;color:${NAVY}">Grade ${g.slice(1)}</span><span style="color:${tc};font-weight:700">${gradeTotal(yr,g)}</span></div>`).join("")}<div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0 0;font-weight:800;color:${NAVY}"><span>Total</span><span>${tot}</span></div></div>`).join("");
+  if(isShifting){
+    document.getElementById("avgPerRoom").textContent=Math.round((mT+aT)/specs.numRooms/2);
+  } else {
+    const allT=totals(yr).total;
+    document.getElementById("avgPerRoom").textContent=Math.round(allT/specs.numRooms);
+  }
+  const shiftBanner=document.getElementById("shiftBanner");
+  if(shiftBanner){
+    if(isShifting){shiftBanner.innerHTML=`ℹ️ Both shifts share the same <span id="shiftRoomsInline">${specs.numRooms}</span> rooms. Avg load: <strong id="avgPerRoom" style="color:#1A3D2B">${Math.round((mT+aT)/specs.numRooms/2)}</strong> learners/room/shift.`;}
+    else{const at=totals(yr).total;shiftBanner.innerHTML=`ℹ️ Regular schedule — all <strong style="color:#1A3D2B">${specs.numRooms}</strong> rooms in one session. Avg load: <strong id="avgPerRoom" style="color:#1A3D2B">${Math.round(at/specs.numRooms)}</strong> learners/room.`;}
+  }
+  if(isShifting){
+    document.getElementById("shiftStats").innerHTML=[[`Morning`,`🌅`,`#FFF8E1`,`#FFF3CC`,`#F0D060`,`#B8860B`,specs.morningGrades,mT],[`Afternoon`,`🌇`,`#E8F4FD`,`#D4E9FA`,`#90C4E8`,`#1565C0`,specs.afternoonGrades,aT]].map(([name,ico,c1,c2,border,tc,gs,tot])=>`<div style="background:linear-gradient(135deg,${c1},${c2});border:1px solid ${border};border-radius:12px;padding:14px 16px;margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:${tc};text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">${ico} ${name} — ${yr}</div>${gs.map(g=>`<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.06)"><span style="font-weight:600;color:${NAVY}">Grade ${g.slice(1)}</span><span style="color:${tc};font-weight:700">${gradeTotal(yr,g)}</span></div>`).join("")}<div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0 0;font-weight:800;color:${NAVY}"><span>Total</span><span>${tot}</span></div></div>`).join("");
+  } else {
+    document.getElementById("shiftStats").innerHTML=`<div style="background:linear-gradient(135deg,#E8F5E9,#d4edda);border:1px solid #a5d6a7;border-radius:12px;padding:14px 16px">`+
+      `<div style="font-size:11px;font-weight:700;color:#1A3D2B;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">🏫 All Grades — Regular Schedule — ${yr}</div>`+
+      GRADES.map(g=>`<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.06)"><span style="font-weight:600;color:${NAVY}">Grade ${g.slice(1)}</span><span style="color:${GREEN};font-weight:700">${gradeTotal(yr,g)}</span></div>`).join("")+
+      `<div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0 0;font-weight:800;color:${NAVY}"><span>Total</span><span>${totals(yr).total}</span></div></div>`;
+  }
   dc("shift");
-  const gKeys=[...specs.morningGrades,...specs.afternoonGrades];
-  const sLabels=specs.morningGrades.map(g=>g+"(AM)").concat(specs.afternoonGrades.map(g=>g+"(PM)"));
-  const allGKeys=[...specs.morningGrades,...specs.afternoonGrades];
-  const allSLabels=[...specs.morningGrades.map(g=>`G${g.slice(1)}(AM)`),...specs.afternoonGrades.map(g=>`G${g.slice(1)}(PM)`)];
-  const sDatasets=multi?yrs.map(y=>({label:y,data:allGKeys.map(g=>gradeTotal(y,g)),backgroundColor:pal(y).m,borderRadius:6,borderSkipped:false})):[{label:"Learners",data:allGKeys.map(g=>gradeTotal(yr,g)),backgroundColor:allGKeys.map((_,i)=>i<specs.morningGrades.length?GOLD:"#1565C0"),borderRadius:6,borderSkipped:false}];
-  const sLeg=multi?{labels:{generateLabels:()=>yrs.map(y=>({text:y,fillStyle:pal(y).m,strokeStyle:pal(y).m,lineWidth:0,hidden:false,fontStyle:"normal"}))}}:{display:false};
+  let allGKeys, allSLabels, sDatasets, sLeg;
+  if(isShifting){
+    allGKeys=[...specs.morningGrades,...specs.afternoonGrades];
+    allSLabels=[...specs.morningGrades.map(g=>`G${g.slice(1)}(AM)`),...specs.afternoonGrades.map(g=>`G${g.slice(1)}(PM)`)];
+    sDatasets=multi?yrs.map(y=>({label:y,data:allGKeys.map(g=>gradeTotal(y,g)),backgroundColor:pal(y).m,borderRadius:6,borderSkipped:false})):[{label:"Learners",data:allGKeys.map(g=>gradeTotal(yr,g)),backgroundColor:allGKeys.map((_,i)=>i<specs.morningGrades.length?GOLD:"#1565C0"),borderRadius:6,borderSkipped:false}];
+    sLeg=multi?{labels:{generateLabels:()=>yrs.map(y=>({text:y,fillStyle:pal(y).m,strokeStyle:pal(y).m,lineWidth:0,hidden:false,fontStyle:"normal"}))}}:{display:false};
+  } else {
+    allGKeys=GRADES;
+    allSLabels=GRADES.map(g=>`Grade ${g.slice(1)}`);
+    sDatasets=multi?yrs.map(y=>({label:y,data:GRADES.map(g=>gradeTotal(y,g)),backgroundColor:pal(y).m,borderRadius:6,borderSkipped:false})):[{label:"Learners",data:GRADES.map(g=>gradeTotal(yr,g)),backgroundColor:GREEN,borderRadius:6,borderSkipped:false}];
+    sLeg=multi?{labels:{generateLabels:()=>yrs.map(y=>({text:y,fillStyle:pal(y).m,strokeStyle:pal(y).m,lineWidth:0,hidden:false,fontStyle:"normal"}))}}:{display:false};
+  }
   CH["shift"]=new Chart(document.getElementById("shiftChart"),{type:"bar",data:{labels:allSLabels,datasets:sDatasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:multi?{labels:sLeg.labels}:{display:false},tooltip:{...ttp}},scales:{x:{grid:{display:false},ticks:axTick},y:{grid:{color:gc},ticks:axTick}}}});
 }
 function renderInsights(){
@@ -885,6 +934,17 @@ function closeEdit(){
 document.getElementById("editModal").addEventListener("click",function(e){if(e.target===this)closeEdit();});
 
 const INPS="width:100%;padding:5px 8px;border-radius:6px;border:1.5px solid #c8e6c9;font-size:13px;text-align:center;outline:none;font-family:DM Sans,sans-serif";
+function setScheduleType(type){
+  const isShifting=type==="shifting";
+  const btnS=document.getElementById("ed_schedTypeShifting");
+  const btnR=document.getElementById("ed_schedTypeRegular");
+  const desc=document.getElementById("ed_schedTypeDesc");
+  const assignments=document.getElementById("ed_shiftAssignments");
+  if(btnS){btnS.style.background=isShifting?"#1A3D2B":"#f0f4f0";btnS.style.color=isShifting?"#fff":"#6B7280";btnS.dataset.active=isShifting?"true":"false";}
+  if(btnR){btnR.style.background=isShifting?"#f0f4f0":"#1A3D2B";btnR.style.color=isShifting?"#6B7280":"#fff";btnR.dataset.active=isShifting?"false":"true";}
+  if(desc)desc.textContent=isShifting?"Two-shift system: AM and PM grade groups share the same rooms.":"Single session: all grades attend during regular school hours. Shift assignments below are ignored.";
+  if(assignments)assignments.style.opacity=isShifting?"1":"0.4";
+}
 function populateEditForm(){
   const yr=document.getElementById("editYear").value;
   document.getElementById("ed_enrollment").innerHTML=GRADES.map(g=>{const d=(enrollment[yr]&&enrollment[yr][g])||{m:0,f:0};return`<tr><td style="font-weight:600;color:#1A3D2B">Grade ${g.slice(1)}</td><td><input type="number" min="0" id="enr_m_${g}" value="${d.m}" style="${INPS}"/></td><td><input type="number" min="0" id="enr_f_${g}" value="${d.f}" style="${INPS}"/></td></tr>`;}).join("");
@@ -900,12 +960,14 @@ function populateEditForm(){
   document.getElementById("ed_insights").value=ins.insights.join("\n");
   document.getElementById("ed_recs").value=ins.recommendations.join("\n");
   // Classroom Specs
-  const specs=classroomSpecs[yr]||{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]};
+  const specs=classroomSpecs[yr]||{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]};
   document.getElementById("ed_numRooms").value=specs.numRooms;
   document.getElementById("ed_widthM").value=specs.widthM;
   document.getElementById("ed_lengthM").value=specs.lengthM;
   document.getElementById("ed_windowsPerRoom").value=specs.windowsPerRoom;
   document.getElementById("ed_fansPerRoom").value=specs.fansPerRoom;
+  // Schedule type toggle
+  setScheduleType(specs.scheduleType||"shifting");
   // Grade checkboxes for shifts
   const buildShiftChecks=(containerId,assignedGrades)=>{
     document.getElementById(containerId).innerHTML=GRADES.map(g=>{
@@ -932,6 +994,7 @@ function applyEdit(){
   seats.forEach(r=>{const el=document.getElementById(`seat_${r.g.replace(/ /g,"_")}`);if(el)r[yr]=parseInt(el.value)||0;});
   insightsData[yr]={insights:document.getElementById("ed_insights").value.split("\n").map(s=>s.trim()).filter(Boolean),recommendations:document.getElementById("ed_recs").value.split("\n").map(s=>s.trim()).filter(Boolean)};
   // Classroom Specs
+  const schedType=document.getElementById("ed_schedTypeShifting").dataset.active==="true"?"shifting":"regular";
   const morningGs=GRADES.filter(g=>{const el=document.getElementById(`ed_morningGrades_${g}`);return el&&el.checked;});
   const afternoonGs=GRADES.filter(g=>{const el=document.getElementById(`ed_afternoonGrades_${g}`);return el&&el.checked;});
   classroomSpecs[yr]={
@@ -940,6 +1003,7 @@ function applyEdit(){
     lengthM:parseFloat(document.getElementById("ed_lengthM").value)||9,
     windowsPerRoom:parseInt(document.getElementById("ed_windowsPerRoom").value)||4,
     fansPerRoom:parseInt(document.getElementById("ed_fansPerRoom").value)||4,
+    scheduleType:schedType,
     morningGrades:morningGs.length>0?morningGs:["G7","G9","G11"],
     afternoonGrades:afternoonGs.length>0?afternoonGs:["G8","G10","G12"],
   };

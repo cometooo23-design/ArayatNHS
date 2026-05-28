@@ -538,7 +538,8 @@
         "G8",
         "G10",
         "G12"
-      ]
+      ],
+      "scheduleType": "shifting"
     },
     "2022-2023": {
       "numRooms": 18,
@@ -555,7 +556,8 @@
         "G8",
         "G10",
         "G12"
-      ]
+      ],
+      "scheduleType": "shifting"
     },
     "2023-2024": {
       "numRooms": 18,
@@ -572,7 +574,8 @@
         "G8",
         "G10",
         "G12"
-      ]
+      ],
+      "scheduleType": "shifting"
     },
     "2024-2025": {
       "numRooms": 18,
@@ -589,7 +592,8 @@
         "G8",
         "G10",
         "G12"
-      ]
+      ],
+      "scheduleType": "shifting"
     },
     "2025-2026": {
       "numRooms": 18,
@@ -606,7 +610,8 @@
         "G8",
         "G10",
         "G12"
-      ]
+      ],
+      "scheduleType": "shifting"
     }
   }
 }
