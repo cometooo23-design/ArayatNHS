@@ -333,6 +333,7 @@ footer{text-align:center;padding:14px;color:#6B7280;font-size:12px;border-top:1p
               <div style="display:flex;align-items:center;gap:10px"><div class="prog-wrap"><div class="prog-fill" id="progFill"></div></div><span id="progPct" style="font-size:15px;font-weight:800;min-width:42px"></span></div>
               <p id="progSub" style="font-size:11px;color:#6B7280;margin-top:4px"></p>
             </div>
+            <div id="seatSharedBanner" class="banner" style="border-color:#1565C0;background:rgba(21,101,192,.06);margin-top:10px;font-size:12px;color:#374151;display:none"></div>
           </div>
         </div>
       </div>
@@ -390,7 +391,17 @@ footer{text-align:center;padding:14px;color:#6B7280;font-size:12px;border-top:1p
         <div class="card"><div class="st"><div class="st-bar"></div><h2>Dropouts</h2></div><div style="display:flex;flex-direction:column;gap:10px"><div style="display:flex;align-items:center;gap:10px"><label style="font-size:13px;font-weight:600;color:#1A3D2B;min-width:80px">Male</label><input id="ed_drop_m" type="number" min="0" class="inp" style="flex:1"/></div><div style="display:flex;align-items:center;gap:10px"><label style="font-size:13px;font-weight:600;color:#1A3D2B;min-width:80px">Female</label><input id="ed_drop_f" type="number" min="0" class="inp" style="flex:1"/></div></div></div>
         <div class="card"><div class="st"><div class="st-bar"></div><h2>Persons w/ Disability (PWD)</h2></div><div style="display:flex;align-items:center;gap:10px"><label style="font-size:13px;font-weight:600;color:#1A3D2B;min-width:80px">PWD Count</label><input id="ed_pwd" type="number" min="0" class="inp" style="flex:1"/></div></div>
         <div class="card"><div class="st"><div class="st-bar"></div><h2>Teachers per Subject</h2></div><div id="ed_teachers" style="display:flex;flex-direction:column;gap:8px"></div></div>
-        <div class="card"><div class="st"><div class="st-bar"></div><h2>Seat Capacity</h2></div><div id="ed_seats" style="display:flex;flex-direction:column;gap:8px"></div></div>
+        <div class="card"><div class="st"><div class="st-bar"></div><h2>Seat Capacity</h2></div>
+          <div id="ed_seats" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div style="margin-top:14px">
+            <div style="font-size:12px;font-weight:700;color:#1A3D2B;margin-bottom:8px">🪑 Seats Shared Between Grade Levels?</div>
+            <div style="display:flex;gap:0;border-radius:10px;overflow:hidden;border:1.5px solid #c8e6c9;width:fit-content">
+              <button id="ed_seatsSharedYes" onclick="setSeatsShared(true)" style="padding:8px 20px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:DM Sans,sans-serif;background:#1A3D2B;color:#fff;transition:all .2s">🔄 Shared</button>
+              <button id="ed_seatsSharedNo" onclick="setSeatsShared(false)" style="padding:8px 20px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:DM Sans,sans-serif;background:#f0f4f0;color:#6B7280;transition:all .2s">🪑 Dedicated</button>
+            </div>
+            <p style="font-size:11px;color:#9CA3AF;margin-top:6px" id="ed_seatsSharedDesc">Same physical seats used by AM and PM shifts — effective capacity doubles.</p>
+          </div>
+        </div>
           <div class="card" style="grid-column:1/-1">
           <div class="st"><div class="st-bar" style="background:#880E4F"></div><h2>🏫 Classroom Specs &amp; Schedule</h2></div>
           <p style="font-size:12px;color:#6B7280;margin-bottom:14px">Edit the physical specs of classrooms and the grade-level shift assignments for this school year.</p>
@@ -508,11 +519,11 @@ const transitions=[
 // morningGrades: grade keys assigned to morning shift (e.g. ["G7","G9","G11"])
 // afternoonGrades: grade keys assigned to afternoon shift
 const classroomSpecs={
-  "2021-2022":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2022-2023":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2023-2024":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2024-2025":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2025-2026":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2021-2022":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2022-2023":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2023-2024":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2024-2025":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2025-2026":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
 };
 
 const insightsData={
@@ -751,16 +762,31 @@ function renderTeacherChart(){
 function renderSeats(){
   dc("seats");
   const yrs=comparedYears,multi=yrs.length>=2,yr=currentYear;
+  const specs=classroomSpecs[yr]||{seatsShared:true,scheduleType:"shifting"};
+  const seatsShared=specs.seatsShared!==false; // default true
+  const isShifting=(specs.scheduleType||"shifting")==="shifting";
+  // Effective capacity: shared seats in a shifting schedule serve 2 shifts, doubling capacity
+  const effectiveSeats=yr=>seats.reduce((s,r)=>s+(r[yr]||0),0)*(seatsShared&&isShifting?2:1);
   document.getElementById("seatsTitle").textContent=multi?`Seat Capacity — ${yrs.length} Years`:`Seat Capacity — ${yr}`;
+  // Show raw seat counts in chart regardless
   const datasets=multi?yrs.map(y=>({label:y,data:seats.map(r=>r[y]||0),backgroundColor:pal(y).m,borderRadius:6,borderSkipped:false})):[{label:"Seats",data:seats.map(r=>r[yr]||0),backgroundColor:GREEN,borderRadius:8,borderSkipped:false}];
   const leg=multi?{labels:{generateLabels:()=>yrs.map(y=>({text:y,fillStyle:pal(y).m,strokeStyle:pal(y).m,lineWidth:0,hidden:false,fontStyle:"normal"}))}}:{display:false};
   CH["seats"]=new Chart(document.getElementById("seatsChart"),{type:"bar",data:{labels:seats.map(r=>r.g),datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:multi?{labels:leg.labels}:{display:false},tooltip:{...ttp}},scales:{x:{grid:{display:false},ticks:axTick},y:{grid:{color:gc},ticks:axTick}}}});
-  const{total}=totals(yr),ts=totalSeats(yr),util=ts?Math.round(total/ts*100):0;
+  const{total}=totals(yr),ts=totalSeats(yr),eff=effectiveSeats(yr),util=eff?Math.round(total/eff*100):0;
   document.getElementById("miniBoxes").innerHTML=seats.map(r=>`<div class="mini-box"><div class="big">${r[yr]||0}</div><div class="sm">${r.g}</div></div>`).join("");
   const col=util>90?"#C0392B":util>75?GOLD:GREEN;
   document.getElementById("progFill").style.cssText=`width:${Math.min(util,100)}%;background:${col}`;
   document.getElementById("progPct").style.color=col;document.getElementById("progPct").textContent=util+"%";
-  document.getElementById("progSub").textContent=`${total.toLocaleString()} enrolled / ${ts.toLocaleString()} total seats (${yr})`;
+  // Shared seats badge
+  const sharedNote=seatsShared&&isShifting?` × 2 shifts = <strong style="color:#1A3D2B">${eff.toLocaleString()} effective seats</strong>`:"";
+  document.getElementById("progSub").innerHTML=`${total.toLocaleString()} enrolled / ${ts.toLocaleString()} seats${sharedNote} (${yr})`;
+  // Show/hide the shared note banner
+  const seatSharedBanner=document.getElementById("seatSharedBanner");
+  if(seatSharedBanner){
+    if(seatsShared&&isShifting){seatSharedBanner.style.display="";seatSharedBanner.innerHTML=`🔄 <strong>Seats are shared between shifts</strong> — the same ${ts.toLocaleString()} physical seats serve both AM and PM, giving an effective capacity of ${eff.toLocaleString()}.`;}
+    else if(!seatsShared){seatSharedBanner.style.display="";seatSharedBanner.innerHTML=`🪑 <strong>Seats are NOT shared</strong> — each grade level has its own dedicated seating. Total physical seats: ${ts.toLocaleString()}.`;}
+    else{seatSharedBanner.style.display="none";}
+  }
 }
 function renderFacilities(){
   const yr=currentYear,yrs=comparedYears,multi=yrs.length>=2,{total}=totals(yr);
@@ -934,6 +960,14 @@ function closeEdit(){
 document.getElementById("editModal").addEventListener("click",function(e){if(e.target===this)closeEdit();});
 
 const INPS="width:100%;padding:5px 8px;border-radius:6px;border:1.5px solid #c8e6c9;font-size:13px;text-align:center;outline:none;font-family:DM Sans,sans-serif";
+function setSeatsShared(shared){
+  const btnY=document.getElementById("ed_seatsSharedYes");
+  const btnN=document.getElementById("ed_seatsSharedNo");
+  const desc=document.getElementById("ed_seatsSharedDesc");
+  if(btnY){btnY.style.background=shared?"#1A3D2B":"#f0f4f0";btnY.style.color=shared?"#fff":"#6B7280";btnY.dataset.active=shared?"true":"false";}
+  if(btnN){btnN.style.background=shared?"#f0f4f0":"#1A3D2B";btnN.style.color=shared?"#6B7280":"#fff";btnN.dataset.active=shared?"false":"true";}
+  if(desc)desc.textContent=shared?"Same physical seats used by AM and PM shifts — effective capacity doubles.":"Each grade group has its own dedicated seats — no doubling of capacity.";
+}
 function setScheduleType(type){
   const isShifting=type==="shifting";
   const btnS=document.getElementById("ed_schedTypeShifting");
@@ -968,6 +1002,8 @@ function populateEditForm(){
   document.getElementById("ed_fansPerRoom").value=specs.fansPerRoom;
   // Schedule type toggle
   setScheduleType(specs.scheduleType||"shifting");
+  // Seats shared toggle
+  setSeatsShared(specs.seatsShared!==false);
   // Grade checkboxes for shifts
   const buildShiftChecks=(containerId,assignedGrades)=>{
     document.getElementById(containerId).innerHTML=GRADES.map(g=>{
@@ -995,6 +1031,7 @@ function applyEdit(){
   insightsData[yr]={insights:document.getElementById("ed_insights").value.split("\n").map(s=>s.trim()).filter(Boolean),recommendations:document.getElementById("ed_recs").value.split("\n").map(s=>s.trim()).filter(Boolean)};
   // Classroom Specs
   const schedType=document.getElementById("ed_schedTypeShifting").dataset.active==="true"?"shifting":"regular";
+  const seatsShared=document.getElementById("ed_seatsSharedYes").dataset.active!=="false";
   const morningGs=GRADES.filter(g=>{const el=document.getElementById(`ed_morningGrades_${g}`);return el&&el.checked;});
   const afternoonGs=GRADES.filter(g=>{const el=document.getElementById(`ed_afternoonGrades_${g}`);return el&&el.checked;});
   classroomSpecs[yr]={
@@ -1004,6 +1041,7 @@ function applyEdit(){
     windowsPerRoom:parseInt(document.getElementById("ed_windowsPerRoom").value)||4,
     fansPerRoom:parseInt(document.getElementById("ed_fansPerRoom").value)||4,
     scheduleType:schedType,
+    seatsShared:seatsShared,
     morningGrades:morningGs.length>0?morningGs:["G7","G9","G11"],
     afternoonGrades:afternoonGs.length>0?afternoonGs:["G8","G10","G12"],
   };
