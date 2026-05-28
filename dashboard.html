@@ -519,11 +519,11 @@ const transitions=[
 // morningGrades: grade keys assigned to morning shift (e.g. ["G7","G9","G11"])
 // afternoonGrades: grade keys assigned to afternoon shift
 const classroomSpecs={
-  "2021-2022":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2022-2023":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2023-2024":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2024-2025":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
-  "2025-2026":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2021-2022":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,seatsDedicated:{G7:0,G8:0,G9:0,G10:0,G11:0,G12:0},morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2022-2023":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,seatsDedicated:{G7:0,G8:0,G9:0,G10:0,G11:0,G12:0},morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2023-2024":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,seatsDedicated:{G7:0,G8:0,G9:0,G10:0,G11:0,G12:0},morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2024-2025":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,seatsDedicated:{G7:0,G8:0,G9:0,G10:0,G11:0,G12:0},morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
+  "2025-2026":{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,seatsDedicated:{G7:0,G8:0,G9:0,G10:0,G11:0,G12:0},morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]},
 };
 
 const insightsData={
@@ -763,29 +763,63 @@ function renderSeats(){
   dc("seats");
   const yrs=comparedYears,multi=yrs.length>=2,yr=currentYear;
   const specs=classroomSpecs[yr]||{seatsShared:true,scheduleType:"shifting"};
-  const seatsShared=specs.seatsShared!==false; // default true
+  const seatsShared=specs.seatsShared!==false;
   const isShifting=(specs.scheduleType||"shifting")==="shifting";
-  // Effective capacity: shared seats in a shifting schedule serve 2 shifts, doubling capacity
-  const effectiveSeats=yr=>seats.reduce((s,r)=>s+(r[yr]||0),0)*(seatsShared&&isShifting?2:1);
-  document.getElementById("seatsTitle").textContent=multi?`Seat Capacity — ${yrs.length} Years`:`Seat Capacity — ${yr}`;
-  // Show raw seat counts in chart regardless
-  const datasets=multi?yrs.map(y=>({label:y,data:seats.map(r=>r[y]||0),backgroundColor:pal(y).m,borderRadius:6,borderSkipped:false})):[{label:"Seats",data:seats.map(r=>r[yr]||0),backgroundColor:GREEN,borderRadius:8,borderSkipped:false}];
+
+  // Build chart labels/data based on mode
+  let chartLabels, chartData, miniBoxHtml;
+  if(seatsShared){
+    // Grouped mode: "Grade 7 & 8", "Grade 9 & 10", "Grade 11 & 12"
+    chartLabels=seats.map(r=>r.g);
+    chartData=multi
+      ?yrs.map(y=>({label:y,data:seats.map(r=>r[y]||0),backgroundColor:pal(y).m,borderRadius:6,borderSkipped:false}))
+      :[{label:"Seats",data:seats.map(r=>r[yr]||0),backgroundColor:GREEN,borderRadius:8,borderSkipped:false}];
+    miniBoxHtml=seats.map(r=>`<div class="mini-box"><div class="big">${r[yr]||0}</div><div class="sm">${r.g}</div></div>`).join("");
+  } else {
+    // Dedicated mode: per-grade
+    const getDed=(y,g)=>{const s=classroomSpecs[y];return(s&&s.seatsDedicated&&s.seatsDedicated[g])||0;};
+    chartLabels=GRADES.map(g=>`Grade ${g.slice(1)}`);
+    chartData=multi
+      ?yrs.map(y=>({label:y,data:GRADES.map(g=>getDed(y,g)),backgroundColor:pal(y).m,borderRadius:6,borderSkipped:false}))
+      :[{label:"Seats",data:GRADES.map(g=>getDed(yr,g)),backgroundColor:GRADES.map((_,i)=>i<4?GREEN:GOLD),borderRadius:8,borderSkipped:false}];
+    miniBoxHtml=GRADES.map(g=>`<div class="mini-box"><div class="big">${getDed(yr,g)}</div><div class="sm">Grade ${g.slice(1)}</div></div>`).join("");
+  }
+
+  document.getElementById("seatsTitle").textContent=multi
+    ?`Seat Capacity — ${yrs.length} Years`
+    :`Seat Capacity (${seatsShared?"Shared":"Dedicated"}) — ${yr}`;
+
   const leg=multi?{labels:{generateLabels:()=>yrs.map(y=>({text:y,fillStyle:pal(y).m,strokeStyle:pal(y).m,lineWidth:0,hidden:false,fontStyle:"normal"}))}}:{display:false};
-  CH["seats"]=new Chart(document.getElementById("seatsChart"),{type:"bar",data:{labels:seats.map(r=>r.g),datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:multi?{labels:leg.labels}:{display:false},tooltip:{...ttp}},scales:{x:{grid:{display:false},ticks:axTick},y:{grid:{color:gc},ticks:axTick}}}});
-  const{total}=totals(yr),ts=totalSeats(yr),eff=effectiveSeats(yr),util=eff?Math.round(total/eff*100):0;
-  document.getElementById("miniBoxes").innerHTML=seats.map(r=>`<div class="mini-box"><div class="big">${r[yr]||0}</div><div class="sm">${r.g}</div></div>`).join("");
+  CH["seats"]=new Chart(document.getElementById("seatsChart"),{type:"bar",data:{labels:chartLabels,datasets:chartData},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:multi?{labels:leg.labels}:{display:false},tooltip:{...ttp}},scales:{x:{grid:{display:false},ticks:axTick},y:{grid:{color:gc},ticks:axTick}}}});
+
+  // Totals for utilization
+  const{total}=totals(yr);
+  const ts=seatsShared
+    ?totalSeats(yr)
+    :GRADES.reduce((s,g)=>s+((specs.seatsDedicated&&specs.seatsDedicated[g])||0),0);
+  const eff=seatsShared&&isShifting?ts*2:ts;
+  const util=eff?Math.round(total/eff*100):0;
+
+  document.getElementById("miniBoxes").innerHTML=miniBoxHtml;
   const col=util>90?"#C0392B":util>75?GOLD:GREEN;
   document.getElementById("progFill").style.cssText=`width:${Math.min(util,100)}%;background:${col}`;
-  document.getElementById("progPct").style.color=col;document.getElementById("progPct").textContent=util+"%";
-  // Shared seats badge
+  document.getElementById("progPct").style.color=col;
+  document.getElementById("progPct").textContent=util+"%";
+
   const sharedNote=seatsShared&&isShifting?` × 2 shifts = <strong style="color:#1A3D2B">${eff.toLocaleString()} effective seats</strong>`:"";
   document.getElementById("progSub").innerHTML=`${total.toLocaleString()} enrolled / ${ts.toLocaleString()} seats${sharedNote} (${yr})`;
-  // Show/hide the shared note banner
+
   const seatSharedBanner=document.getElementById("seatSharedBanner");
   if(seatSharedBanner){
-    if(seatsShared&&isShifting){seatSharedBanner.style.display="";seatSharedBanner.innerHTML=`🔄 <strong>Seats are shared between shifts</strong> — the same ${ts.toLocaleString()} physical seats serve both AM and PM, giving an effective capacity of ${eff.toLocaleString()}.`;}
-    else if(!seatsShared){seatSharedBanner.style.display="";seatSharedBanner.innerHTML=`🪑 <strong>Seats are NOT shared</strong> — each grade level has its own dedicated seating. Total physical seats: ${ts.toLocaleString()}.`;}
-    else{seatSharedBanner.style.display="none";}
+    if(seatsShared&&isShifting){
+      seatSharedBanner.style.display="";
+      seatSharedBanner.innerHTML=`🔄 <strong>Seats are shared between shifts</strong> — the same ${ts.toLocaleString()} physical seats serve both AM and PM, giving an effective capacity of ${eff.toLocaleString()}.`;
+    } else if(!seatsShared){
+      seatSharedBanner.style.display="";
+      seatSharedBanner.innerHTML=`🪑 <strong>Dedicated seats per grade level</strong> — each grade has its own assigned seats. Total: ${ts.toLocaleString()} seats across all grades.`;
+    } else {
+      seatSharedBanner.style.display="none";
+    }
   }
 }
 function renderFacilities(){
@@ -966,7 +1000,20 @@ function setSeatsShared(shared){
   const desc=document.getElementById("ed_seatsSharedDesc");
   if(btnY){btnY.style.background=shared?"#1A3D2B":"#f0f4f0";btnY.style.color=shared?"#fff":"#6B7280";btnY.dataset.active=shared?"true":"false";}
   if(btnN){btnN.style.background=shared?"#f0f4f0":"#1A3D2B";btnN.style.color=shared?"#6B7280":"#fff";btnN.dataset.active=shared?"false":"true";}
-  if(desc)desc.textContent=shared?"Same physical seats used by AM and PM shifts — effective capacity doubles.":"Each grade group has its own dedicated seats — no doubling of capacity.";
+  if(desc)desc.textContent=shared?"Same physical seats used by AM and PM shifts — effective capacity doubles.":"Each grade level has its own dedicated seats — enter the seat count per grade below.";
+  // Rebuild seat inputs depending on mode
+  const yr=document.getElementById("editYear").value;
+  const seatsEl=document.getElementById("ed_seats");
+  if(!seatsEl)return;
+  if(shared){
+    // Grouped inputs (existing seats array)
+    seatsEl.innerHTML=seats.map(r=>`<div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;font-weight:600;color:#1A3D2B;min-width:130px">${r.g}</span><input type="number" min="0" id="seat_${r.g.replace(/ /g,'_')}" value="${r[yr]||0}" style="${INPS}"/></div>`).join("");
+  } else {
+    // Per-grade inputs from seatsDedicated
+    const specs=classroomSpecs[yr]||{};
+    const ded=specs.seatsDedicated||{};
+    seatsEl.innerHTML=GRADES.map(g=>`<div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;font-weight:600;color:#1A3D2B;min-width:80px">Grade ${g.slice(1)}</span><input type="number" min="0" id="seat_ded_${g}" value="${ded[g]||0}" style="${INPS}"/></div>`).join("");
+  }
 }
 function setScheduleType(type){
   const isShifting=type==="shifting";
@@ -989,7 +1036,8 @@ function populateEditForm(){
   document.getElementById("ed_drop_m").value=drop.male;document.getElementById("ed_drop_f").value=drop.female;
   document.getElementById("ed_pwd").value=lwd[yr]||0;
   document.getElementById("ed_teachers").innerHTML=teachers.map(r=>`<div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;font-weight:600;color:#1A3D2B;min-width:80px">${r.s}</span><input type="number" min="0" id="tch_${r.s.replace(/[. ]/g,"_")}" value="${r[yr]||0}" style="${INPS}"/></div>`).join("");
-  document.getElementById("ed_seats").innerHTML=seats.map(r=>`<div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;font-weight:600;color:#1A3D2B;min-width:110px">${r.g}</span><input type="number" min="0" id="seat_${r.g.replace(/ /g,"_")}" value="${r[yr]||0}" style="${INPS}"/></div>`).join("");
+  // Seats: initial grouped render (setSeatsShared will re-render if needed)
+  document.getElementById("ed_seats").innerHTML=seats.map(r=>`<div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;font-weight:600;color:#1A3D2B;min-width:130px">${r.g}</span><input type="number" min="0" id="seat_${r.g.replace(/ /g,'_')}" value="${r[yr]||0}" style="${INPS}"/></div>`).join("");
   const ins=insightsData[yr]||{insights:[],recommendations:[]};
   document.getElementById("ed_insights").value=ins.insights.join("\n");
   document.getElementById("ed_recs").value=ins.recommendations.join("\n");
@@ -1027,11 +1075,15 @@ function applyEdit(){
   if(di>=0){dropouts[di].male=dm;dropouts[di].female=df;}else dropouts.push({year:yr,male:dm,female:df});
   lwd[yr]=parseInt(document.getElementById("ed_pwd").value)||0;
   teachers.forEach(r=>{const el=document.getElementById(`tch_${r.s.replace(/[. ]/g,"_")}`);if(el)r[yr]=parseInt(el.value)||0;});
-  seats.forEach(r=>{const el=document.getElementById(`seat_${r.g.replace(/ /g,"_")}`);if(el)r[yr]=parseInt(el.value)||0;});
+  const seatsShared=document.getElementById("ed_seatsSharedYes").dataset.active!=="false";
+  if(seatsShared){
+    seats.forEach(r=>{const el=document.getElementById(`seat_${r.g.replace(/ /g,"_")}`);if(el)r[yr]=parseInt(el.value)||0;});
+  }
   insightsData[yr]={insights:document.getElementById("ed_insights").value.split("\n").map(s=>s.trim()).filter(Boolean),recommendations:document.getElementById("ed_recs").value.split("\n").map(s=>s.trim()).filter(Boolean)};
   // Classroom Specs
   const schedType=document.getElementById("ed_schedTypeShifting").dataset.active==="true"?"shifting":"regular";
-  const seatsShared=document.getElementById("ed_seatsSharedYes").dataset.active!=="false";
+  const dedicatedSeats={};
+  if(!seatsShared){GRADES.forEach(g=>{const el=document.getElementById(`seat_ded_${g}`);dedicatedSeats[g]=el?parseInt(el.value)||0:0;});}
   const morningGs=GRADES.filter(g=>{const el=document.getElementById(`ed_morningGrades_${g}`);return el&&el.checked;});
   const afternoonGs=GRADES.filter(g=>{const el=document.getElementById(`ed_afternoonGrades_${g}`);return el&&el.checked;});
   classroomSpecs[yr]={
@@ -1042,6 +1094,7 @@ function applyEdit(){
     fansPerRoom:parseInt(document.getElementById("ed_fansPerRoom").value)||4,
     scheduleType:schedType,
     seatsShared:seatsShared,
+    seatsDedicated:seatsShared?(classroomSpecs[yr]&&classroomSpecs[yr].seatsDedicated)||{}:dedicatedSeats,
     morningGrades:morningGs.length>0?morningGs:["G7","G9","G11"],
     afternoonGrades:afternoonGs.length>0?afternoonGs:["G8","G10","G12"],
   };
@@ -1078,7 +1131,7 @@ function addNewYear(){
   // Inherit classroom specs from previous year as a starting point
   const prevSpecsYr=YEARS[YEARS.indexOf(yr)-1];
   const prevSpecs=prevSpecsYr&&classroomSpecs[prevSpecsYr];
-  classroomSpecs[yr]=prevSpecs?{...prevSpecs}:{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]};
+  classroomSpecs[yr]=prevSpecs?{...prevSpecs,seatsDedicated:{...((prevSpecs.seatsDedicated)||{G7:0,G8:0,G9:0,G10:0,G11:0,G12:0})}}:{numRooms:18,widthM:7,lengthM:9,windowsPerRoom:4,fansPerRoom:4,scheduleType:"shifting",seatsShared:true,seatsDedicated:{G7:0,G8:0,G9:0,G10:0,G11:0,G12:0},morningGrades:["G7","G9","G11"],afternoonGrades:["G8","G10","G12"]};
   // Add a placeholder transition entry (prev year G10 → new year G11)
   if(YEARS.length>=2){
     const prevYr=YEARS[YEARS.length-2];
